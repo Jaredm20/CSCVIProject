@@ -49,7 +49,7 @@ function generateQuote() {
 
         // Create and append image element
         const authorImage = new Image();
-        authorImage.src = `images/${selectedQuote.author.toLowerCase().replace(/\s/g, '')}.jpg`;
+        authorImage.src = `./images/${selectedQuote.author.toLowerCase().replace(/\s/g, '')}.jpg`;
         authorImage.alt = `${selectedQuote.author}'s Image`;
         authorImage.classList.add('author-image');
         imageContainer.innerHTML = ''; // Clear previous image
@@ -78,7 +78,18 @@ function getBiography(author) {
     }
 }
 
+function deleteQuote(index) {
+    savedQuotes.splice(index, 1);
+    updateSavedQuotesDisplay();
+}
 
+function updateSavedQuotesDisplay() {
+    const savedQuotesContainer = document.getElementById('savedQuotes');
+
+savedQuotesContainer.innerHTML = savedQuotes.map((quote, index) => {
+    return `<p>${quote} <button onclick="deleteQuote(${index})">Delete</button></p>`;
+}).join('');
+}
 
 function toggleLogin() {
     const userSection = document.getElementById('userSection');
@@ -103,7 +114,13 @@ function saveQuote() {
     savedQuotes.push(quote);
 
     savedQuotesContainer.innerHTML = savedQuotes.map(q => `<p>${q}</p>`).join('');
+    
+    updateSavedQuotesDisplay();
+
 }
+
+updateSavedQuotesDisplay();
+
 
 function shareQuote() {
     const generatedQuote = document.getElementById('generatedQuote');
